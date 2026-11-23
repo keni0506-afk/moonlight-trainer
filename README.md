@@ -1,25 +1,32 @@
-# Moonlight Trainer
+# Moonlight Trainer v0.5.0
 
-ベートーヴェン《月光ソナタ》第3楽章の冒頭を、鍵盤の位置と右手の指の動きで覚える練習アプリです。[GitHub Pages で開く](https://keni0506-afk.github.io/moonlight-trainer/)
+ベートーヴェン《月光ソナタ》第3楽章を、鍵盤の位置と指の動きで覚える練習アプリです。[GitHub Pages で開く](https://keni0506-afk.github.io/moonlight-trainer/)
 
 ## 使い方
 
-1. iPhone では画面を横向きにします。鍵盤は一画面に収まり、練習や再生中も移動しません。
-2. 4・8・15音を選び、黄色い鍵盤を順に押します。「指の目安」は練習用の運指です。間違えると同じ音に留まり、正しく押すと次へ進みます。
-3. 「練習のお手本」で、選んだ長さの右手を再生します。速度は音の間隔が 1,100・750・430 ms の3段階です。右手の最初の16分休符にも同じ長さを使います。
-4. 「高速 ♩=168」で、冒頭2小節を両手で再生します。168 BPM はこのアプリで使う目安です。練習音数と速度の設定に関係なく再生し、表示範囲内の右手音を光らせます。
-5. 「次の音」で練習中の音を確認できます。再生中のボタンを押すと停止し、「最初から」で練習位置をリセットします。
+1. iPhoneでは横向きにします。鍵盤は常に A1〜D6 を表示します。今回の収録音域は A1〜C♯6 です。小さい画面でも全音域を収めるため鍵幅は狭くなります。
+2. 4・8・15音練習では、第1小節の右手を黄色い鍵盤の順に押します。正解すると進みます。「次の音」で音を確認し、「最初から」でリセットできます。運指は練習用の目安です。
+3. 「練習のお手本」は選んだ音数の右手を再生します。「区間のお手本」は開始小節・終了小節と右手・左手・両手に従います。「高速 ♩=168」も同じ区間と手を使い、速度欄に関係なく演奏速度の目安で再生します。区間のお手本と高速再生では、再生を続けながら鍵盤を押して動きを練習できます。
+4. 青い落下ノートは右手、オレンジは左手です。ノートの先端が鍵盤の上の線に届く時刻が発音時刻で、長さは譜面上の音価です。鍵盤の点灯はスタッカートを含む実際の発音時間に従います。
+5. 「一時停止」で位置を保持し、「再開」で続きから鳴らします。「停止」は再生位置をリセットします。「リピート」を選ぶと区間の終わりから冒頭に戻ります。開始・終了小節や手を変えたら、選び直した区間のお手本を押してください。
+
+速度欄は既存の3段階（16分音符あたり1,100・750・430 ms）と ♩=60・96・120・168 を用意しています。練習・区間のお手本の速度を再生中に変えると、その位置から新しい速度に切り替わります。
 
 ## 譜面と音源
 
-- Ludwig van Beethoven、ピアノソナタ第14番 嬰ハ短調 Op. 27 No. 2、第3楽章 *Presto agitato*、第1・2小節。Universal Edition の Wiener 版（譜面 p. 42）と、Mutopia Project の掲載譜（Winterberger 校訂、p. 8）で、音高・発音位置・音価・休符・スタッカートを照合しました。[Wiener 版（IMSLP）](https://s9.imslp.org/files/imglnks/usimg/8/82/IMSLP508466-PMLP1458-Beethoven.op27no2.sonata.no14.moonlight.wiener.pdf) · [Mutopia Project](https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=276)
-- 第1小節の右手は16分休符から入り、G♯2 から始まる16分音符15音が続きます。第2小節は右手の16分音符12音と、スタッカートの8分和音2つです。両小節の左手はスタッカートの8分音符で進み、第2小節末尾付近には低音のオクターブがあります。
-- 音は Web Audio API で三角波を合成しています。スタッカートの発音時間は譜面上の音価の半分とし、残りの時間を空けます。実演録音や外部の音声・楽譜ファイルの配信はありません。
+第3楽章 *Presto agitato* の第1〜8小節について、Wiener版 p.42 と Mutopia 掲載譜 p.8、および後者の LilyPond データを照合しました。休符、左手の8分音符、右手の16分音符と8分和音、第2・4・6小節の左手オクターブ、第7・8小節の右手スタッカートを収録しました。[Wiener版（IMSLP）](https://s9.imslp.org/files/imglnks/usimg/8/82/IMSLP508466-PMLP1458-Beethoven.op27no2.sonata.no14.moonlight.wiener.pdf) · [Mutopia Project](https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=276)
 
-## 構成とテスト
+音源は Web Audio の三角波です。スタッカートは譜面上の音価の半分を鳴らします。ペダルやフレージングは演奏に反映していません。譜面の反復開始記号は小節番号に含め、再生の繰り返しは区間リピートで指定します。
 
-- `index.html` に画面、固定鍵盤、練習ロジック、冒頭の音列、音声合成が入っています。ビルドなしでブラウザーから開けます。
-- `tests/trainer.test.cjs` は WebKit と Chromium で、練習操作、再生タイミング、中断、横画面の固定表示を検証します。Web Audio を搭載しないテストブラウザーでは、代替APIでスケジューリングを検証します。Node.js 22 で以下を実行します。
+## 構成と拡張
+
+- `index.html` は操作画面、`trainer.css` は画面と固定鍵盤の配置、`trainer.js` は練習判定と Web Audio 時計による再生・描画です。
+- `score.js` の各小節は長さと左右それぞれのイベントを持ちます。各イベントには小節内の発音位置、譜面上の音価、MIDI音高の配列、奏法を記録します。同時発音は同じイベントや同じ発音位置で表し、休符には発音イベントを置きません。固定鍵盤の範囲外を含む区間は再生を止め、画面に理由を表示します。
+- 今後 MusicXML を取り込む際は、拍内位置・音価・和音・休符・左右の声部をこの形式へ正規化します。連符や細かい音価のために四分音符あたりの単位数を増やす場合は、既存データと全速度設定も同じ単位系に変換します。タイやペダルは取り込み時に表現を追加します。
+
+## テストと公開
+
+`index.html` はビルドなしで開けます。Node.js 22 で次を実行すると、WebKitとChromiumのiPhone横画面エミュレーションで練習、固定鍵盤、落下と音の同期、停止・再開、速度、左右切替と区間リピートを検証します。再生位置のテストには制御可能な音声時計を使い、Chromiumでは実際の Web Audio での再生完了も確認します。
 
 ```sh
 npm ci
@@ -27,6 +34,13 @@ npx playwright install chromium webkit
 npm test
 ```
 
-## GitHub Pages
+GitHub Pages は `main` のルートを公開します。push後に Actions の **pages build and deployment** の成功と、公開ページ右上のバージョン番号を確認します。新規設定時は **Settings → Pages → Deploy from a branch → main → /(root)** を選びます。[GitHub Pages の公開元設定](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 
-公開元は `main` のルートです。変更を `main` に push すると、Actions の **pages build and deployment** が実行されます。成功後に公開URLを開き、最新の内容を確認してください。新規設定時は **Settings → Pages → Deploy from a branch → main → /(root)** を選びます。[公開元の設定手順](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+## 更新履歴
+
+| バージョン | 変更 |
+| --- | --- |
+| v0.5.0 | 第1〜8小節、左右別の落下ノート、区間指定・リピート、一時停止・再開、速度追加、バージョン表示。 |
+| 直前の版 | 第1・2小節の譜面照合、♩=168 の高速デモ、4・8・15音練習と固定鍵盤。 |
+
+リリース時は `index.html` のバージョン表示と、このREADMEの見出し・更新履歴を同時に更新します。
